@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Ảnh sản phẩm slider -->
+        <ImageView
+            android:id="@+id/imageViewProduct"
+            android:layout_width="385dp"
+            android:layout_height="395dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/iphone" />
+
+        <!-- Tên sản phẩm -->
+        <TextView
+            android:id="@+id/textViewProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="iPhone 16 Pro Max 512GB"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <!-- Giá + Tình trạng -->
+        <TextView
+            android:id="@+id/textViewProductPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="29.990.000₫"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Còn hàng"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="4dp" />
+
+        <!-- Chọn dung lượng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dung lượng:"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupStorage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio128" android:text="128GB"/>
+            <RadioButton android:id="@+id/radio256" android:text="256GB"/>
+            <RadioButton android:id="@+id/radio512" android:text="512GB"/>
+        </RadioGroup>
+
+        <!-- Chọn màu sắc -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Màu sắc:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radioBlack" android:text="Đen"/>
+            <RadioButton android:id="@+id/radioWhite" android:text="Trắng"/>
+            <RadioButton android:id="@+id/radioBlue" android:text="Xanh"/>
+        </RadioGroup>
+
+        <!-- Nút thêm giỏ hàng -->
+        <Button
+            android:id="@+id/buttonAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm vào giỏ hàng"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#FF9800"
+            android:layout_marginTop="16dp" />
+
+        <!-- Mô tả sản phẩm -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mô tả sản phẩm"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="iPhone 16 Pro Max: Chip A18, 512GB, pin 5000mAh, sạc nhanh 65W, camera 48MP. Hỗ trợ 5G, FaceID đời mới nhất. Bảo hành 12 tháng chính hãng."
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
