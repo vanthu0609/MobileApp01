@@ -1,28 +1,70 @@
 package com.example.hitcapp;
 
-public class CartItem { private String name;
-private int price;
+public class CartItem {
+    private String name;
+    private int price;
+    private int imageResId; // ảnh từ drawable
+    private String storage;
+    private String color;
+    private boolean selected; // ✅ Trạng thái được chọn
 
-public CartItem(String name, int price) {
-    this.name = name;
-    this.price = price;
-}
+    // Constructor đầy đủ
+    public CartItem(String name, int price, int imageResId, String storage, String color) {
+        this.name = name;
+        this.price = price;
+        this.imageResId = imageResId;
+        this.storage = storage;
+        this.color = color;
+        this.selected = false; // Mặc định chưa được chọn
+    }
 
-// Getter
-public String getName() {
-    return name;
-}
+    // Getters
+    public String getName() {
+        return name;
+    }
 
-public int getPrice() {
-    return price;
-}
+    public int getPrice() {
+        return price;
+    }
 
-// Setter (nếu cần)
-public void setName(String name) {
-    this.name = name;
-}
+    public int getImageResId() {
+        return imageResId;
+    }
 
-public void setPrice(int price) {
-    this.price = price;
-}
+    public String getStorage() {
+        return storage;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageResId(int imageResId) {
+        this.imageResId = imageResId;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }

@@ -1,25 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:layout_margin="12dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="6dp"
+    card_view:cardBackgroundColor="#FFFFFF">
 
-    <TextView
-        android:id="@+id/tvItemName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tên sản phẩm"
-        android:textColor="#000"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tvItemPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Giá"
-        android:textColor="#FF5722"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
-</LinearLayout>
+        <!-- Ảnh sản phẩm -->
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/iphone"
+            android:contentDescription="Ảnh sản phẩm" />
+
+        <!-- Nội dung chi tiết -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="16dp">
+
+            <!-- Tên sản phẩm -->
+            <TextView
+                android:id="@+id/tvProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên sản phẩm"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#212121"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Giá -->
+            <TextView
+                android:id="@+id/tvProductPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giá: 0₫"
+                android:textSize="15sp"
+                android:textColor="#FF5722"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif" />
+
+            <!-- Tùy chọn: Dung lượng + Màu -->
+            <TextView
+                android:id="@+id/tvProductOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="128GB - Trắng"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif" />
+
+            <!-- Hành động chọn -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="end|center_vertical">
+
+                <!-- Checkbox chọn thanh toán -->
+                <CheckBox
+                    android:id="@+id/cbSelectToPay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn để thanh toán"
+                    android:textSize="14sp"
+                    android:textColor="#FFA000"
+                    android:fontFamily="sans-serif-medium"
+                    android:buttonTint="#FFA000"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Nút Xoá -->
+                <ImageButton
+                    android:id="@+id/btnRemove"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_delete"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Xoá sản phẩm"
+                    card_view:tint="#FF7043" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
