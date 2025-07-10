@@ -1,11 +1,12 @@
 package com.example.hitcapp;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,12 +14,45 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private ProductAdapter adapter;
+    private List<Product> productList;
+    private Button btnViewCart;
+    private RequestQueue mRequestQueue;
+
+    // Gọi API sản phẩm
+    private final String url = "https://fakestoreapi.com/products";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ✅ Kiểm tra đăng nhập
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
+        if (!isLoggedIn) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
@@ -28,96 +62,49 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Nút "Xem tất cả sản phẩm"
-        Button btnViewAll = findViewById(R.id.buttonViewAll);
-        btnViewAll.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng 'Xem tất cả sản phẩm' đang phát triển", Toast.LENGTH_SHORT).show();
+        setupRecyclerView();
+        getData();
+
+        btnViewCart = findViewById(R.id.btnViewCart);
+        btnViewCart.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this, CartActivity.class));
         });
+    }
 
-        // SearchView
-        SearchView searchView = findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(HomeActivity.this, "Đang tìm: " + query, Toast.LENGTH_SHORT).show();
-                return false;
-            }
+    private void setupRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerViewProducts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productList = new ArrayList<>();
+        adapter = new ProductAdapter(this, productList);
+        recyclerView.setAdapter(adapter);
+    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+    private void getData() {
+        mRequestQueue = Volley.newRequestQueue(this);
 
-        // Sản phẩm 1 - click vào khung sản phẩm
-        LinearLayout product1 = findViewById(R.id.product1);
-        product1.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "iPhone 16 Pro Max");
-            intent.putExtra("price", "29.990.000₫");
-            intent.putExtra("description", "iPhone 16 Pro Max mới nhất với chip A18 Bionic, camera cải tiến...");
-            intent.putExtra("image", R.drawable.iphone);
-            startActivity(intent);
-        });
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    productList.clear();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            String title = obj.getString("title");
+                            double price = obj.getDouble("price");
+                            String image = obj.getString("image");
 
-        // Sản phẩm 2
-        LinearLayout product2 = findViewById(R.id.product2);
-        product2.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "Samsung Galaxy S25 Ultra");
-            intent.putExtra("price", "25.490.000₫");
-            intent.putExtra("description", "Samsung Galaxy S25 Ultra với màn hình 6.9 inch, camera 200MP.");
-            intent.putExtra("image", R.drawable.samsung);
-            startActivity(intent);
-        });
+                            productList.add(new Product(title, "$" + price, image));
+                        }
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "JSON parse error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    Log.e(TAG, "Volley error: " + error.toString());
+                    Toast.makeText(this, "API error", Toast.LENGTH_SHORT).show();
+                });
 
-        // Sản phẩm 3
-        LinearLayout product3 = findViewById(R.id.product3);
-        product3.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "Redmi Note 14");
-            intent.putExtra("price", "7.990.000₫");
-            intent.putExtra("description", "Redmi Note 14 pin khủng 6000mAh, Snapdragon 8 Gen 2.");
-            intent.putExtra("image", R.drawable.redmi);
-            startActivity(intent);
-        });
-
-        // ===== Xử lý nút "Xem chi tiết sản phẩm" cho từng sản phẩm =====
-
-        Button btnBuyNow1 = findViewById(R.id.btnBuyNow1);
-        btnBuyNow1.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "iPhone 16 Pro Max");
-            intent.putExtra("price", "29.990.000₫");
-            intent.putExtra("description", "iPhone 16 Pro Max mới nhất với chip A18 Bionic, camera cải tiến...");
-            intent.putExtra("image", R.drawable.iphone);
-            startActivity(intent);
-        });
-
-        Button btnBuyNow2 = findViewById(R.id.btnBuyNow2);
-        btnBuyNow2.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "Samsung Galaxy S25 Ultra");
-            intent.putExtra("price", "25.490.000₫");
-            intent.putExtra("description", "Samsung Galaxy S25 Ultra với màn hình 6.9 inch, camera 200MP.");
-            intent.putExtra("image", R.drawable.samsung);
-            startActivity(intent);
-        });
-
-        Button btnBuyNow3 = findViewById(R.id.btnBuyNow3);
-        btnBuyNow3.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            intent.putExtra("name", "Redmi Note 14");
-            intent.putExtra("price", "7.990.000₫");
-            intent.putExtra("description", "Redmi Note 14 pin khủng 6000mAh, Snapdragon 8 Gen 2.");
-            intent.putExtra("image", R.drawable.redmi);
-            startActivity(intent);
-        });
-        ImageView imgCart = findViewById(R.id.imgCart);
-        imgCart.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, CartActivity.class);
-            startActivity(intent);
-        });
-
+        mRequestQueue.add(jsonArrayRequest);
     }
 }

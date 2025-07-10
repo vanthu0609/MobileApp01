@@ -20,7 +20,7 @@ public class CartAdapter extends BaseAdapter {
 
     public interface CartActionListener {
         void onItemRemoved(int position);
-        void onItemCheckedChanged(); // Chỉ cần báo có thay đổi
+        void onItemCheckedChanged(); // Thông báo khi thay đổi trạng thái checkbox
     }
 
     public CartAdapter(Context context, ArrayList<CartItem> cartItems, CartActionListener listener) {
@@ -78,21 +78,21 @@ public class CartAdapter extends BaseAdapter {
         holder.tvProductOptions.setText(item.getStorage() + " - " + item.getColor());
         holder.imgProduct.setImageResource(item.getImageResId());
 
-        // Khôi phục trạng thái checkbox
-        holder.cbSelectToPay.setOnCheckedChangeListener(null); // Ngăn gọi lại khi setChecked
+        // Khôi phục trạng thái checkbox đúng cách
+        holder.cbSelectToPay.setOnCheckedChangeListener(null); // Xóa listener cũ
         holder.cbSelectToPay.setChecked(item.isSelected());
 
-        // Khi người dùng chọn checkbox
+        // Gán listener mới
         holder.cbSelectToPay.setOnCheckedChangeListener((buttonView, isChecked) -> {
             item.setSelected(isChecked);
             if (listener != null) {
-                listener.onItemCheckedChanged(); // Báo lên Activity để cập nhật tổng tiền
+                listener.onItemCheckedChanged();
             }
         });
 
-        // Xử lý xoá
+        // Gắn sự kiện xóa an toàn theo vị trí hiện tại
         holder.btnRemove.setOnClickListener(v -> {
-            if (listener != null) {
+            if (listener != null && position >= 0 && position < cartItems.size()) {
                 listener.onItemRemoved(position);
             }
         });

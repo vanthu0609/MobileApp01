@@ -15,6 +15,12 @@ public class CartManager {
         return cartItems;
     }
 
+    // Cập nhật toàn bộ danh sách sản phẩm (dùng khi cần đồng bộ lại)
+    public static void setItems(ArrayList<CartItem> items) {
+        cartItems.clear();
+        cartItems.addAll(items);
+    }
+
     // Xoá tất cả sản phẩm
     public static void clear() {
         cartItems.clear();
@@ -34,14 +40,14 @@ public class CartManager {
         return cartItems.size();
     }
 
-    // ✅ Xoá sản phẩm theo vị trí
+    // Xoá sản phẩm theo vị trí
     public static void removeAt(int index) {
         if (index >= 0 && index < cartItems.size()) {
             cartItems.remove(index);
         }
     }
 
-    // ✅ Xoá sản phẩm theo đối tượng (nếu cần)
+    // Xoá sản phẩm theo đối tượng
     public static void removeItem(CartItem item) {
         cartItems.remove(item);
     }
