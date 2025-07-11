@@ -1,6 +1,8 @@
 package com.example.hitcapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,17 +33,19 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
 
         // Lấy dữ liệu từ CartManager
-        cartItems = CartManager.getItems();
+        cartItems = new ArrayList<>(CartManager.getItems()); // tạo bản sao an toàn
 
         // Khởi tạo adapter
         cartAdapter = new CartAdapter(this, cartItems, new CartAdapter.CartActionListener() {
             @Override
             public void onItemRemoved(int position) {
-                CartManager.removeAt(position);
-                cartItems.remove(position);
-                cartAdapter.notifyDataSetChanged();
-                updateTotal();
-                Toast.makeText(CartActivity.this, "Đã xoá sản phẩm", Toast.LENGTH_SHORT).show();
+                if (position >= 0 && position < cartItems.size()) {
+                    CartItem removedItem = cartItems.remove(position);
+                    CartManager.removeItem(removedItem); // xoá theo object an toàn
+                    cartAdapter.notifyDataSetChanged();
+                    updateTotal();
+                    Toast.makeText(CartActivity.this, "Đã xoá sản phẩm", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -53,39 +57,41 @@ public class CartActivity extends AppCompatActivity {
         listView.setAdapter(cartAdapter);
         updateTotal();
 
-        // Xử lý nút thanh toán các sản phẩm được chọn
+        // Xử lý nút thanh toán
         btnCheckout.setOnClickListener(v -> {
             ArrayList<String> paidProductNames = new ArrayList<>();
+            ArrayList<CartItem> selectedItems = new ArrayList<>();
+            int totalPrice = 0;
 
-            for (int i = cartItems.size() - 1; i >= 0; i--) {
-                CartItem item = cartItems.get(i);
+            for (CartItem item : cartItems) {
                 if (item.isSelected()) {
                     paidProductNames.add(item.getName());
-                    CartManager.removeAt(i);
-                    cartItems.remove(i);
+                    totalPrice += item.getPrice();
+                    selectedItems.add(item);
                 }
             }
 
             if (paidProductNames.isEmpty()) {
                 Toast.makeText(this, "Vui lòng chọn sản phẩm để thanh toán!", Toast.LENGTH_SHORT).show();
-            } else {
-                StringBuilder message = new StringBuilder("Đã thanh toán: ");
-                for (int i = 0; i < paidProductNames.size(); i++) {
-                    message.append(paidProductNames.get(i));
-                    if (i < paidProductNames.size() - 1) {
-                        message.append(", ");
-                    }
-                }
-
-                Toast.makeText(this, message.toString(), Toast.LENGTH_LONG).show();
+                return;
             }
+
+            // Xóa các sản phẩm đã chọn
+            cartItems.removeAll(selectedItems);
+            CartManager.setItems(new ArrayList<>(cartItems)); // cập nhật giỏ hàng
+
+            // Chuyển sang OrderActivity
+            Log.d("CartActivity", "Chuyển sang OrderActivity với " + paidProductNames.size() + " sản phẩm");
+            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+            intent.putStringArrayListExtra("PAID_PRODUCTS", paidProductNames);
+            intent.putExtra("TOTAL_PRICE", totalPrice);
+            startActivity(intent);
 
             cartAdapter.notifyDataSetChanged();
             updateTotal();
         });
     }
 
-    // Tính tổng giá tiền từ các sản phẩm đã chọn
     private void updateTotal() {
         int total = 0;
         for (CartItem item : cartItems) {
