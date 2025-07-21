@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
+=======
+    android:id="@+id/main"
+>>>>>>> b96b1de3c6ee900596c4f346e14744cd671ec583
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -21,7 +25,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+<<<<<<< HEAD
     <!-- Giỏ hàng -->
+=======
+    <!-- Biểu tượng giỏ hàng có badge -->
+>>>>>>> b96b1de3c6ee900596c4f346e14744cd671ec583
     <FrameLayout
         android:id="@+id/cartContainer"
         android:layout_width="wrap_content"
@@ -71,6 +79,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+<<<<<<< HEAD
     <!-- Tiêu đề danh mục -->
     <TextView
         android:id="@+id/tvCategory"
@@ -85,14 +94,17 @@
         android:layout_marginTop="16dp" />
 
     <!-- Danh mục ngang -->
+=======
+    <!-- Danh mục -->
+>>>>>>> b96b1de3c6ee900596c4f346e14744cd671ec583
     <LinearLayout
         android:id="@+id/categoryLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:weightSum="4"
-        app:layout_constraintTop_toBottomOf="@id/tvCategory"
+        app:layout_constraintTop_toBottomOf="@id/imageViewBanner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -150,6 +162,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp" />
 
+<<<<<<< HEAD
     <!-- RecyclerView để hiển thị danh sách sản phẩm -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -162,6 +175,20 @@
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp" />
+=======
+    <!-- RecyclerView hiển thị sản phẩm -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProducts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFeatured"
+        app:layout_constraintBottom_toTopOf="@id/buttonViewAll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+>>>>>>> b96b1de3c6ee900596c4f346e14744cd671ec583
 
     <!-- Nút xem tất cả -->
     <Button
@@ -169,9 +196,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Xem tất cả sản phẩm"
+<<<<<<< HEAD
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/recyclerView"
+=======
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+>>>>>>> b96b1de3c6ee900596c4f346e14744cd671ec583
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
