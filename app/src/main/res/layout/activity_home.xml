@@ -9,7 +9,7 @@
     android:background="#FFFFFF"
     tools:context=".HomeActivity">
 
-    <!-- Thanh tìm kiếm -->
+    <!-- Thanh tìm kiếm edstgdgrdrg -->
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
